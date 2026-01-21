@@ -1,5 +1,7 @@
+import '../env/environment_config.dart';
+
 class ApiConfig {
-  static const String baseUrl = 'https://api.workhub.local/api/v1';
+  static String get baseUrl => EnvironmentConfig.apiBaseUrl;
   static const int connectTimeout = 10000; // 10s
   static const int receiveTimeout = 10000; // 10s
 

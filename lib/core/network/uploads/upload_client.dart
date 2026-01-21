@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart'; // Add this dependency if needed, or use string.
 
 import '../api_config.dart';
 import '../api_response.dart';
@@ -68,7 +67,7 @@ class UploadClient {
         request.fileBytes,
         filename: request.fileName,
         contentType: request.mimeType != null
-            ? MediaType.parse(request.mimeType!)
+            ? http.MediaType.parse(request.mimeType!)
             : null,
       );
       multipartRequest.files.add(multipartFile);
