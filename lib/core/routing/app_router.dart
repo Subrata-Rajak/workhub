@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../features/auth/presentation/pages/login_page.dart';
+import '../../features/auth/presentation/pages/signup_org_page.dart';
 import 'route_guards.dart';
 import 'route_paths.dart';
 import 'route_state.dart';
@@ -27,15 +29,11 @@ class AppRouter {
       ),
       GoRoute(
         path: RoutePaths.login,
-        builder: (context, state) => const Scaffold(
-          body: Center(child: Text('Login Screen Placeholder')),
-        ),
+        builder: (context, state) => const LoginPage(),
       ),
       GoRoute(
         path: RoutePaths.signup,
-        builder: (context, state) => const Scaffold(
-          body: Center(child: Text('Signup Screen Placeholder')),
-        ),
+        builder: (context, state) => const SignupOrgPage(),
       ),
       GoRoute(
         path: RoutePaths.selectOrganization,

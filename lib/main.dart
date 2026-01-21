@@ -3,10 +3,12 @@ import 'core/bootstrap/app_bootstrap.dart';
 import 'core/env/app_environment.dart';
 import 'core/routing/app_router.dart';
 import 'core/routing/route_state.dart';
+import 'core/bootstrap/desktop_window_setup.dart';
 
 void main() async {
   // 1. Initialize Bindings
   WidgetsFlutterBinding.ensureInitialized();
+  await setupDesktopWindow();
 
   // 2. Run App Bootstrap
   // TODO: In the future, this might select environment based on build flavor or flags.
@@ -32,6 +34,7 @@ class WorkHubApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       title: 'WorkHub',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
