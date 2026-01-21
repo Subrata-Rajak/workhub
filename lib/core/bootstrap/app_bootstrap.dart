@@ -4,8 +4,8 @@ import '../env/app_environment.dart';
 import '../env/env_loader.dart';
 import '../env/environment_config.dart';
 import '../network/api_config.dart';
+import '../secure_storage/secure_storage_impl.dart';
 import '../storage/app_database.dart';
-import '../storage/secure_storage_service.dart';
 import 'bootstrap_exception.dart';
 import 'bootstrap_result.dart';
 
@@ -22,7 +22,7 @@ class AppBootstrap {
       // 2. Initialize Secure Storage
       // We don't need to 'open' it, but we can verify it's instantiated.
       await _step('Initializing Secure Storage', () async {
-        final secureStorage = SecureStorageService();
+        SecureStorageImpl();
         // simple read check to ensure platform channel works?
         // For now just instantiation is enough as per requirement "Initialize the secure storage abstraction"
       });
@@ -34,7 +34,7 @@ class AppBootstrap {
         // To force check, we could effectively do a dummy query or just rely on lazy init.
         // Requirement says "Verify database readiness".
         // Let's create an instance; validation happens by ensuring no exception during implicit setup.
-        final db = AppDatabase();
+        AppDatabase();
         // Optional: db.customStatement('SELECT 1');
       });
 
