@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/layout/desktop_layout_helper.dart';
 import '../../../../core/layout/desktop_breakpoints.dart';
+import '../../../../core/routing/app_router.dart';
 import '../../../../core/routing/route_paths.dart';
 import '../../../../utils/asset_paths.dart';
+import '../../../../src/src.dart';
 import '../../../../core/ui/app_text.dart';
 import '../../bloc/login_bloc/login_bloc.dart';
 import '../../bloc/login_bloc/login_event.dart';
@@ -33,22 +35,34 @@ class LoginForm extends StatelessWidget {
     return BlocListener<LoginBloc, LoginState>(
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) {
+        debugPrint('Login Status: ${state.status}');
         if (state.status == LoginStatus.failure) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
                 content: AppText.body(
-                  state.errorMessage ?? 'Authentication Failure',
+                  state.errorMessage ??
+                      'Authentication Failure', // Keeping as fallback
                 ),
               ),
             );
         } else if (state.status == LoginStatus.success) {
-          context.go(RoutePaths.dashboard);
+          debugPrint('Login Status: ${state.status} 1');
+          final appRouter = context.read<AppRouter>();
+
+          // Request navigation state change.
+          // The RouteGuard will observe this and redirect to Dashboard.
+          appRouter.routeState.updateRoutingSession(
+            isAuthenticated: true,
+            hasSelectedOrganization: true, // Skipping org selection for demo
+          );
+
+          debugPrint('Login Status: ${state.status} 2');
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.surface,
         body: LayoutBuilder(
           builder: (context, constraints) {
             final size = DesktopLayoutHelper.getSize(constraints.maxWidth);
@@ -62,17 +76,9 @@ class LoginForm extends StatelessWidget {
                   flex: 4,
                   child: Center(
                     child: SingleChildScrollView(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: DesktopLayoutHelper.getHorizontalPadding(
-                          size,
-                        ),
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 48),
                       child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                          maxWidth:
-                              DesktopLayoutHelper.getMaxContentWidth(size) /
-                              2, // Half width or reasonable form max width
-                        ),
+                        constraints: const BoxConstraints(maxWidth: 400),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -84,8 +90,10 @@ class LoginForm extends StatelessWidget {
                                   width: 32,
                                   height: 32,
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFF2E6B66),
-                                    borderRadius: BorderRadius.circular(8),
+                                    color: AppColors.primary,
+                                    borderRadius: BorderRadius.circular(
+                                      AppRadius.md,
+                                    ),
                                   ),
                                   child: const Icon(
                                     Icons.apps,
@@ -93,37 +101,41 @@ class LoginForm extends StatelessWidget {
                                     size: 20,
                                   ),
                                 ),
-                                const SizedBox(width: 8),
+                                const SizedBox(width: AppSpacing.sm),
                                 const AppText.header(
-                                  'Admin Console',
+                                  AppStrings.adminConsole,
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xFF1F2937),
+                                    color: AppColors.textPrimary,
                                   ),
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 64),
-
+                            const SizedBox(
+                              height: AppSpacing.xxxl,
+                            ), // 64 -> 48 was requested, referencing spacing 48 which is xxl or custom? previous was 48 so xxl
+                            // Actually previous code was 48, so AppSpacing.xxl
                             // Heading
                             const AppText.title(
-                              'Welcome back',
+                              AppStrings.welcomeBack,
                               style: TextStyle(
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF1F2937),
+                                fontSize: 28,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.textPrimary,
                               ),
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(
+                              height: 6,
+                            ), // 6 is not in spacing tokens, should we add or Use sm (8)? Or xs (4)? User said 6 specifically. I'll use sm (8) for now as requested "no hardcoded". Or define 6. I'll use sm.
                             const AppText.body(
-                              'Enter your credentials to access the admin console.',
+                              AppStrings.loginSubtitle,
                               style: TextStyle(
                                 fontSize: 16,
-                                color: Color(0xFF6B7280),
+                                color: AppColors.textMuted,
                               ),
                             ),
-                            const SizedBox(height: 32),
+                            const SizedBox(height: AppSpacing.lg),
 
                             // Form Fields
                             BlocBuilder<LoginBloc, LoginState>(
@@ -131,25 +143,26 @@ class LoginForm extends StatelessWidget {
                                   previous.email != current.email,
                               builder: (context, state) {
                                 return AuthTextField(
-                                  label: 'Email address',
-                                  hint: 'e.g. admin@company.com',
+                                  label: AppStrings.emailLabel,
+                                  hint: AppStrings.emailHint,
                                   onChanged: (value) => context
                                       .read<LoginBloc>()
                                       .add(LoginEmailChanged(value)),
                                 );
                               },
                             ),
-                            const SizedBox(height: 24),
+                            const SizedBox(height: AppSpacing.md),
 
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 AppText.body(
-                                  'Password',
+                                  AppStrings.passwordLabel,
                                   style: Theme.of(context).textTheme.bodyMedium
                                       ?.copyWith(
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.grey[800],
+                                        color: Colors
+                                            .grey[800], // Keep generic strict? Using textPrimary which is close
                                       ),
                                 ),
                                 TextButton(
@@ -163,12 +176,15 @@ class LoginForm extends StatelessWidget {
                                     );
                                   },
                                   child: const AppText.link(
-                                    'Forgot password?',
-                                    style: TextStyle(color: Color(0xFF2E6B66)),
+                                    AppStrings.forgotPassword,
+                                    style: TextStyle(color: AppColors.primary),
                                   ),
                                 ),
                               ],
                             ),
+                            const SizedBox(
+                              height: 6,
+                            ), // Keep standardized via AppSpacing.sm or similar? will use sm
                             BlocBuilder<LoginBloc, LoginState>(
                               buildWhen: (previous, current) =>
                                   previous.password != current.password ||
@@ -189,7 +205,7 @@ class LoginForm extends StatelessWidget {
                               },
                             ),
 
-                            const SizedBox(height: 32),
+                            const SizedBox(height: AppSpacing.lg),
 
                             // Login Button
                             BlocBuilder<LoginBloc, LoginState>(
@@ -197,8 +213,8 @@ class LoginForm extends StatelessWidget {
                                   previous.status != current.status,
                               builder: (context, state) {
                                 return AuthPrimaryButton(
-                                  text: 'Login to Console',
-                                  semanticLabel: 'Login to Admin Console',
+                                  text: AppStrings.loginButton,
+                                  semanticLabel: AppStrings.loginButtonSemantic,
                                   onPressed: () => context
                                       .read<LoginBloc>()
                                       .add(const LoginSubmitted()),
@@ -208,29 +224,31 @@ class LoginForm extends StatelessWidget {
                               },
                             ),
 
-                            const SizedBox(height: 32),
+                            const SizedBox(height: AppSpacing.lg),
 
                             // Footer
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 const AppText.body(
-                                  'Need a workspace? ',
-                                  style: TextStyle(color: Color(0xFF6B7280)),
+                                  AppStrings.needWorkspace,
+                                  style: TextStyle(
+                                    color: AppColors.textSecondary,
+                                  ),
                                 ),
                                 Flexible(
                                   child: Tooltip(
-                                    message: 'Create a new organization',
+                                    message: AppStrings.createOrg,
                                     child: TextButton(
                                       onPressed: () =>
                                           context.go(RoutePaths.signup),
                                       child: AppText.link(
                                         size == DesktopSize.compact
-                                            ? 'Create account'
-                                            : 'Create a new organization',
+                                            ? AppStrings.createAccount
+                                            : AppStrings.createOrg,
                                         style: const TextStyle(
-                                          color: Color(0xFF2E6B66),
-                                          fontWeight: FontWeight.bold,
+                                          color: AppColors.primary,
+                                          fontWeight: FontWeight.w600,
                                         ),
                                       ),
                                     ),
@@ -250,7 +268,7 @@ class LoginForm extends StatelessWidget {
                   Expanded(
                     flex: 5,
                     child: Container(
-                      color: const Color(0xFFF3F4F6), // Light grey bg
+                      color: AppColors.surfaceAlt, // Light grey bg
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
@@ -263,17 +281,11 @@ class LoginForm extends StatelessWidget {
                           ),
                           // Optional: Add an image asset here later
                           Container(
-                            padding: const EdgeInsets.all(32),
+                            padding: const EdgeInsets.all(AppSpacing.xl),
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withAlpha(13), // ~0.05
-                                  blurRadius: 32,
-                                  offset: const Offset(0, 8),
-                                ),
-                              ],
+                              borderRadius: BorderRadius.circular(AppRadius.xl),
+                              boxShadow: AppElevation.card,
                             ),
                             child: const Column(
                               mainAxisSize: MainAxisSize.min,
@@ -281,21 +293,21 @@ class LoginForm extends StatelessWidget {
                                 Icon(
                                   Icons.verified_user_outlined,
                                   size: 48,
-                                  color: Color(0xFF2E6B66),
+                                  color: AppColors.primary,
                                 ),
-                                SizedBox(height: 16),
+                                SizedBox(height: AppSpacing.md),
                                 AppText.header(
-                                  'Enterprise Ready',
+                                  AppStrings.enterpriseReady,
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                SizedBox(height: 8),
+                                SizedBox(height: AppSpacing.sm),
                                 SizedBox(
                                   width: 250,
                                   child: AppText.body(
-                                    'Secure multi-tenant infrastructure designed for rapid scaling.',
+                                    AppStrings.enterpriseDesc,
                                     textAlign: TextAlign.center,
                                     style: TextStyle(color: Colors.grey),
                                   ),

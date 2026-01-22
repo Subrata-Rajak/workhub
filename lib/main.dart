@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'core/bootstrap/app_bootstrap.dart';
 import 'core/env/app_environment.dart';
 import 'core/routing/app_router.dart';
 import 'core/routing/route_state.dart';
+import 'src/src.dart';
 import 'core/bootstrap/desktop_window_setup.dart';
 
 void main() async {
@@ -23,7 +25,13 @@ void main() async {
   final appRouter = AppRouter(routeState);
 
   // 4. Run App
-  runApp(WorkHubApp(appRouter: appRouter));
+  // 4. Run App
+  runApp(
+    RepositoryProvider.value(
+      value: appRouter,
+      child: WorkHubApp(appRouter: appRouter),
+    ),
+  );
 }
 
 class WorkHubApp extends StatelessWidget {
@@ -36,10 +44,7 @@ class WorkHubApp extends StatelessWidget {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'WorkHub',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: AppTheme.lightTheme,
       routerConfig: appRouter.router,
     );
   }

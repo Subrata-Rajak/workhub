@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../src/src.dart';
 
 class AuthTextField extends StatelessWidget {
   final String label;
@@ -23,27 +24,33 @@ class AuthTextField extends StatelessWidget {
           label,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.bold,
-            color: Colors.grey[800],
+            color: AppColors.textPrimary, // Was grey[800]
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         TextFormField(
           onChanged: onChanged,
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: TextStyle(color: Colors.grey[400]),
+            hintStyle: const TextStyle(
+              color: AppColors.textMuted,
+            ), // Was grey[400]
             errorText: errorText, // Display error directly from BLoC if needed
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: Colors.grey[300]!),
+            border: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(AppRadius.mdRadius),
+              borderSide: BorderSide(color: AppColors.border),
             ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: Colors.grey[300]!),
+            enabledBorder: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(AppRadius.mdRadius),
+              borderSide: BorderSide(color: AppColors.border),
+            ),
+            focusedBorder: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(AppRadius.mdRadius),
+              borderSide: BorderSide(color: AppColors.borderFocus),
             ),
             contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 16,
+              horizontal: AppSpacing.md,
+              vertical: AppSpacing.md,
             ),
           ),
         ),

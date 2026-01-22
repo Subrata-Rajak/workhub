@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/ui/app_text.dart';
+import '../../../../src/src.dart';
 
 class AuthPrimaryButton extends StatelessWidget {
   final String text;
@@ -18,7 +19,7 @@ class AuthPrimaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 48,
+      height: 44,
       width: double.infinity,
       child: Tooltip(
         message: semanticLabel,
@@ -26,22 +27,20 @@ class AuthPrimaryButton extends StatelessWidget {
         child: ElevatedButton(
           onPressed: isLoading ? null : onPressed,
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF2E6B66),
-            foregroundColor: Colors.white,
-            disabledBackgroundColor: const Color(
-              0xFF2E6B66,
-            ).withAlpha(128), // ~0.5
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+            backgroundColor: AppColors.primary,
+            foregroundColor: AppColors.textInverse,
+            disabledBackgroundColor: AppColors.primary.withAlpha(128), // ~0.5
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(AppRadius.mdRadius),
             ),
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
           ),
           child: isLoading
               ? const SizedBox(
-                  width: 24,
-                  height: 24,
+                  width: AppSpacing.lg, // 24
+                  height: AppSpacing.lg, // 24
                   child: CircularProgressIndicator(
-                    color: Colors.white,
+                    color: AppColors.textInverse,
                     strokeWidth: 2,
                   ),
                 )
@@ -51,9 +50,9 @@ class AuthPrimaryButton extends StatelessWidget {
                   excludeSemantics: true,
                   child: AppText.button(
                     text,
-                    style: const TextStyle(
+                    style: AppTextStyles.label.copyWith(
                       fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                      color: AppColors.textInverse,
                     ),
                     textAlign: TextAlign.center,
                   ),

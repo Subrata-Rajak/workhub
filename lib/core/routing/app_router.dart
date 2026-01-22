@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/signup_org_page.dart';
+import '../../features/dashboard/presentation/pages/dashboard_page.dart';
 import 'route_guards.dart';
 import 'route_paths.dart';
 import 'route_state.dart';
@@ -43,8 +44,7 @@ class AppRouter {
       ),
       GoRoute(
         path: RoutePaths.dashboard,
-        builder: (context, state) =>
-            const Scaffold(body: Center(child: Text('Dashboard Placeholder'))),
+        builder: (context, state) => const DashboardPage(),
       ),
     ],
     errorBuilder: (context, state) =>

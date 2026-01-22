@@ -25,13 +25,16 @@ class RouteState extends ChangeNotifier {
   }
 
   // Methods to update mock auth state for testing navigation flows
-  void setAuthenticated(bool value) {
-    _isAuthenticated = value;
-    notifyListeners();
-  }
-
-  void setHasSelectedOrganization(bool value) {
-    _hasSelectedOrganization = value;
+  void updateRoutingSession({
+    bool? isAuthenticated,
+    bool? hasSelectedOrganization,
+  }) {
+    if (isAuthenticated != null) {
+      _isAuthenticated = isAuthenticated;
+    }
+    if (hasSelectedOrganization != null) {
+      _hasSelectedOrganization = hasSelectedOrganization;
+    }
     notifyListeners();
   }
 }
