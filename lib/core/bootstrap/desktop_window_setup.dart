@@ -9,8 +9,8 @@ Future<void> setupDesktopWindow() async {
     await windowManager.ensureInitialized();
 
     const WindowOptions windowOptions = WindowOptions(
-      size: Size(1280, 800), // Comfortable default
-      minimumSize: Size(1024, 720), // Hard constraint
+      size: Size(1440, 900), // Larger default as requested
+      minimumSize: Size(1200, 800), // Hard constraint
       center: true,
       backgroundColor: Colors.transparent,
       skipTaskbar: false,

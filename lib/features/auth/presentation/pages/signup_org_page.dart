@@ -13,6 +13,7 @@ import '../../bloc/signup_bloc/signup_state.dart';
 import '../widgets/auth_primary_button.dart';
 import '../widgets/auth_text_field.dart';
 import '../widgets/password_field.dart';
+import '../../../../core/di/injection_container.dart';
 
 class SignupOrgPage extends StatelessWidget {
   const SignupOrgPage({super.key});
@@ -20,7 +21,7 @@ class SignupOrgPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SignupBloc(),
+      create: (context) => sl<SignupBloc>(),
       child: const SignupOrgForm(),
     );
   }

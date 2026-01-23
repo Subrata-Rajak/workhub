@@ -5,9 +5,13 @@ import '../bloc/dashboard_bloc/dashboard_bloc.dart';
 import '../../data/models/organization.dart';
 import '../../data/models/project.dart';
 import 'switcher_modal.dart';
+import '../../../global_search/presentation/widgets/global_search_modal.dart';
 
 class DashboardTopbar extends StatelessWidget {
-  const DashboardTopbar({super.key});
+  final VoidCallback? onMenuTap;
+  final bool showMenuIcon;
+
+  const DashboardTopbar({super.key, this.onMenuTap, this.showMenuIcon = false});
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +27,24 @@ class DashboardTopbar extends StatelessWidget {
           final isSmallScreen = constraints.maxWidth < 900;
           return Row(
             children: [
+              if (showMenuIcon) ...[
+                IconButton(
+                  onPressed: onMenuTap,
+                  icon: const Icon(Icons.menu, color: AppColors.textSecondary),
+                  tooltip: 'Open Sidebar (Ctrl+B)',
+                ),
+                const SizedBox(width: 8),
+                const Padding(
+                  padding: EdgeInsets.only(right: 16),
+                  child: Text(
+                    'WorkHub',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                ),
+              ],
               // Org Switcher
               if (!isSmallScreen) ...[
                 const _OrgSwitcher(),
@@ -37,32 +59,38 @@ class DashboardTopbar extends StatelessWidget {
                 child: Center(
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 480),
-                    child: Container(
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: AppColors.surfaceAlt,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.search,
-                            color: AppColors.textMuted,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              AppStrings.topbarSearchHintExpanded,
-                              style: TextStyle(
-                                color: AppColors.textMuted.withAlpha(200),
-                                fontSize: 13,
-                              ),
-                              overflow: TextOverflow.ellipsis,
+                    child: GestureDetector(
+                      onTap: () {
+                        // Import will be added at the top
+                        showGlobalSearchModal(context);
+                      },
+                      child: Container(
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: AppColors.surfaceAlt,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.search,
+                              color: AppColors.textMuted,
+                              size: 20,
                             ),
-                          ),
-                        ],
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                AppStrings.topbarSearchHintExpanded,
+                                style: TextStyle(
+                                  color: AppColors.textMuted.withAlpha(200),
+                                  fontSize: 13,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

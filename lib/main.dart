@@ -6,6 +6,8 @@ import 'core/routing/app_router.dart';
 import 'core/routing/route_state.dart';
 import 'src/src.dart';
 import 'core/bootstrap/desktop_window_setup.dart';
+import 'core/di/injection_container.dart';
+import 'features/dashboard/presentation/bloc/dashboard_bloc/dashboard_bloc.dart';
 
 void main() async {
   // 1. Initialize Bindings
@@ -18,18 +20,18 @@ void main() async {
   final bootstrap = AppBootstrap();
   final result = await bootstrap.initialize(AppEnvironment.development);
 
-  // 3. Initialize Route State & Router
-  final routeState = RouteState();
+  // 3. Initialize DI
+  await setupDependencies();
+
+  // Set bootstrap result into RouteState (which is now a singleton in DI)
+  final routeState = sl<RouteState>();
   routeState.setBootstrapResult(result);
 
-  final appRouter = AppRouter(routeState);
-
-  // 4. Run App
   // 4. Run App
   runApp(
     RepositoryProvider.value(
-      value: appRouter,
-      child: WorkHubApp(appRouter: appRouter),
+      value: sl<AppRouter>(),
+      child: WorkHubApp(appRouter: sl<AppRouter>()),
     ),
   );
 }
@@ -41,11 +43,14 @@ class WorkHubApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      title: 'WorkHub',
-      theme: AppTheme.lightTheme,
-      routerConfig: appRouter.router,
+    return BlocProvider(
+      create: (context) => sl<DashboardBloc>()..add(LoadDashboardData()),
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        title: 'WorkHub',
+        theme: AppTheme.lightTheme,
+        routerConfig: appRouter.router,
+      ),
     );
   }
 }

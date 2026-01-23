@@ -94,6 +94,13 @@ class AppStrings {
   static const String myProjects = 'My Projects';
   static const String recentUpdates = 'Recent Updates';
 
+  // Global Search
+  static const String globalSearchPlaceholder =
+      'Search users, projects, settings…';
+  static const String globalSearchNoResults = 'No results found';
+  static const String globalSearchEmptyState =
+      'Try searching for users, projects, or settings';
+
   // Common
   static const String loading = 'Loading...';
 }

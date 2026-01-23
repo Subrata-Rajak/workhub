@@ -5,14 +5,20 @@ import '../../../../src/src.dart';
 class DashboardSidebar extends StatelessWidget {
   final VoidCallback? onDashboardTap;
   final VoidCallback? onMembersTap;
+  final VoidCallback? onProjectsTap; // Added
+  final VoidCallback? onRolesTap;
   final VoidCallback? onSettingsTap;
+  final VoidCallback? onClose; // Added
   final String currentView;
 
   const DashboardSidebar({
     super.key,
     this.onDashboardTap,
     this.onMembersTap,
+    this.onProjectsTap,
+    this.onRolesTap,
     this.onSettingsTap,
+    this.onClose,
     this.currentView = 'admin',
   });
 
@@ -71,6 +77,16 @@ class DashboardSidebar extends StatelessWidget {
                     ),
                   ],
                 ),
+                const Spacer(),
+                IconButton(
+                  onPressed: onClose,
+                  icon: const Icon(
+                    Icons.keyboard_double_arrow_left,
+                    color: AppColors.textSecondary,
+                    size: 20,
+                  ),
+                  tooltip: 'Collapse Sidebar (Ctrl+B)',
+                ),
               ],
             ),
           ),
@@ -92,14 +108,14 @@ class DashboardSidebar extends StatelessWidget {
           _SidebarItem(
             icon: Icons.folder_outlined,
             label: 'Projects',
-            isActive: false, // Placeholder for now
-            onTap: () {},
+            isActive: currentView == 'projects',
+            onTap: onProjectsTap,
           ),
           _SidebarItem(
             icon: Icons.shield_outlined,
             label: 'Roles & Permissions',
-            isActive: false,
-            onTap: () {},
+            isActive: currentView == 'roles',
+            onTap: onRolesTap,
           ),
           _SidebarItem(
             icon: Icons.settings_outlined,

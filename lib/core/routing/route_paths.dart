@@ -5,4 +5,8 @@ class RoutePaths {
   static const String signup = '/signup';
   static const String selectOrganization = '/select-organization';
   static const String dashboard = '/dashboard';
+  static const String projects = '/projects';
+  static const String projectDetails = '/projects/:projectId';
+  static const String members = '/members';
+  static const String roles = '/roles';
 }

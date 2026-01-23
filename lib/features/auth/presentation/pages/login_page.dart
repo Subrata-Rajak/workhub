@@ -14,6 +14,7 @@ import '../../bloc/login_bloc/login_state.dart';
 import '../widgets/auth_primary_button.dart';
 import '../widgets/auth_text_field.dart';
 import '../widgets/password_field.dart';
+import '../../../../core/di/injection_container.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -21,7 +22,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LoginBloc(),
+      create: (context) => sl<LoginBloc>(),
       child: const LoginForm(),
     );
   }

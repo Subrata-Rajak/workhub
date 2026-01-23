@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
 import '../../../../core/ui/app_text.dart';
 import '../../../../src/src.dart';
+import '../widgets/animated_tab_selector.dart';
+import '../widgets/invite_member_sheet.dart';
 
-class MembersPage extends StatelessWidget {
+class MembersPage extends StatefulWidget {
   const MembersPage({super.key});
+
+  @override
+  State<MembersPage> createState() => _MembersPageState();
+}
+
+class _MembersPageState extends State<MembersPage> {
+  int _selectedTabIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +101,9 @@ class MembersPage extends StatelessWidget {
                         ),
                         const SizedBox(width: AppSpacing.md), // 16
                         ElevatedButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            InviteMemberSheet.show(context);
+                          },
                           icon: const Icon(Icons.person_add, size: 18),
                           label: const Text(AppStrings.sendInvite),
                           style: ElevatedButton.styleFrom(
@@ -196,28 +207,16 @@ class MembersPage extends StatelessWidget {
                             padding: const EdgeInsets.all(AppSpacing.md),
                             child: Row(
                               children: [
-                                // Tabs
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: AppColors.surfaceAlt, // grey[100]
-                                    borderRadius: BorderRadius.circular(
-                                      AppRadius.md,
-                                    ),
-                                  ),
-                                  padding: const EdgeInsets.all(4),
-                                  child: const Row(
-                                    children: [
-                                      _FilterTab(label: 'All', isActive: true),
-                                      _FilterTab(
-                                        label: 'Active',
-                                        isActive: false,
-                                      ),
-                                      _FilterTab(
-                                        label: 'Pending',
-                                        isActive: false,
-                                      ),
-                                    ],
-                                  ),
+                                // Animated Tabs
+                                AnimatedTabSelector(
+                                  tabs: const ['All', 'Active', 'Pending'],
+                                  initialIndex: _selectedTabIndex,
+                                  onTabSelected: (index) {
+                                    setState(() {
+                                      _selectedTabIndex = index;
+                                    });
+                                    // TODO: Filter members based on selected tab
+                                  },
                                 ),
                                 const Spacer(),
                                 const Text(
@@ -456,35 +455,6 @@ class _SummaryCard extends StatelessWidget {
             child: Icon(icon, color: color, size: 24),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _FilterTab extends StatelessWidget {
-  final String label;
-  final bool isActive;
-
-  const _FilterTab({required this.label, required this.isActive});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      decoration: BoxDecoration(
-        color: isActive ? AppColors.surface : Colors.transparent,
-        borderRadius: BorderRadius.circular(
-          6,
-        ), // 6 is not in tokens. AppRadius.sm (4) or md (8). I'll use 6 custom or md. I'll use 6 for now or change to md.
-        boxShadow: isActive ? AppElevation.filterTab : null,
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          fontSize: 13,
-          fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
-          color: isActive ? const Color(0xFF1F2937) : Colors.grey[600],
-        ),
       ),
     );
   }
