@@ -5,9 +5,11 @@ import '../../../../src/src.dart';
 class DashboardSidebar extends StatelessWidget {
   final VoidCallback? onDashboardTap;
   final VoidCallback? onMembersTap;
-  final VoidCallback? onProjectsTap; // Added
+  final VoidCallback? onProjectsTap;
+  final VoidCallback? onTasksTap;
   final VoidCallback? onRolesTap;
   final VoidCallback? onSettingsTap;
+  final VoidCallback? onAuditLogsTap; // Added
   final VoidCallback? onClose; // Added
   final String currentView;
 
@@ -16,8 +18,10 @@ class DashboardSidebar extends StatelessWidget {
     this.onDashboardTap,
     this.onMembersTap,
     this.onProjectsTap,
+    this.onTasksTap,
     this.onRolesTap,
     this.onSettingsTap,
+    this.onAuditLogsTap,
     this.onClose,
     this.currentView = 'admin',
   });
@@ -112,6 +116,12 @@ class DashboardSidebar extends StatelessWidget {
             onTap: onProjectsTap,
           ),
           _SidebarItem(
+            icon: Icons.check_circle_outline, // Tasks icon
+            label: 'Tasks',
+            isActive: currentView == 'tasks',
+            onTap: onTasksTap,
+          ),
+          _SidebarItem(
             icon: Icons.shield_outlined,
             label: 'Roles & Permissions',
             isActive: currentView == 'roles',
@@ -120,8 +130,8 @@ class DashboardSidebar extends StatelessWidget {
           _SidebarItem(
             icon: Icons.settings_outlined,
             label: 'Org Settings',
-            isActive: false,
-            onTap: () {},
+            isActive: currentView == 'settings',
+            onTap: onSettingsTap,
           ),
 
           const SizedBox(height: 24),
@@ -142,8 +152,8 @@ class DashboardSidebar extends StatelessWidget {
           _SidebarItem(
             icon: Icons.history,
             label: 'Audit Logs',
-            isActive: false,
-            onTap: () {},
+            isActive: currentView == 'audit_logs',
+            onTap: onAuditLogsTap,
           ),
 
           const Spacer(),

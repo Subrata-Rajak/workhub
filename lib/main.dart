@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'core/bootstrap/app_bootstrap.dart';
 import 'core/env/app_environment.dart';
 import 'core/routing/app_router.dart';
@@ -47,6 +49,16 @@ class WorkHubApp extends StatelessWidget {
       create: (context) => sl<DashboardBloc>()..add(LoadDashboardData()),
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
+        localizationsDelegates: const [
+          FlutterQuillLocalizations.delegate, // ✅ REQUIRED
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+
+        supportedLocales: const [
+          Locale('en'), // add more later if needed
+        ],
         title: 'WorkHub',
         theme: AppTheme.lightTheme,
         routerConfig: appRouter.router,

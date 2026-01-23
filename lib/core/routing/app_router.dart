@@ -8,6 +8,10 @@ import '../../features/members/presentation/pages/members_page.dart';
 import '../../features/projects/presentation/pages/projects_page.dart';
 import '../../features/projects/presentation/pages/project_details_page.dart';
 import '../../features/roles_and_permissions/presentation/pages/roles_and_permissions_page.dart';
+import '../../features/tasks/presentation/pages/tasks_page.dart';
+import '../../features/tasks/presentation/pages/task_details_page.dart';
+import '../../features/settings/presentation/pages/organization_settings_page.dart';
+import '../../features/audit_logs/presentation/pages/audit_logs_page.dart';
 import 'route_guards.dart';
 import 'route_paths.dart';
 import 'route_state.dart';
@@ -83,6 +87,28 @@ class AppRouter {
             path: RoutePaths.roles,
             pageBuilder: (context, state) =>
                 const NoTransitionPage(child: RolesAndPermissionsPage()),
+          ),
+          GoRoute(
+            path: RoutePaths.tasks,
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: TasksPage()),
+          ),
+          GoRoute(
+            path: RoutePaths.taskDetails,
+            pageBuilder: (context, state) {
+              final taskId = state.pathParameters['taskId']!;
+              return NoTransitionPage(child: TaskDetailsPage(taskId: taskId));
+            },
+          ),
+          GoRoute(
+            path: RoutePaths.settings,
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: OrganizationSettingsPage()),
+          ),
+          GoRoute(
+            path: RoutePaths.auditLogs,
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: AuditLogsPage()),
           ),
         ],
       ),

@@ -5,6 +5,7 @@ import '../../../../src/src.dart';
 import '../widgets/project_overview_tab.dart';
 import '../widgets/project_team_tab.dart';
 import '../widgets/project_activity_tab.dart';
+import '../widgets/project_settings_tab.dart';
 
 class ProjectDetailsPage extends StatefulWidget {
   final String projectId;
@@ -70,7 +71,7 @@ class _ProjectDetailsPageState extends State<ProjectDetailsPage>
               ProjectOverviewTab(),
               ProjectTeamTab(),
               ProjectActivityTab(),
-              Center(child: Text('Settings')),
+              ProjectSettingsTab(),
             ],
           ),
         ),

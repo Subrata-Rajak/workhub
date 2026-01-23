@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../src/src.dart';
-import '../../data/models/search_result.dart';
+import 'package:workhub/src/src.dart';
+import 'package:workhub/features/global_search/data/models/search_result.dart';
 import 'search_result_item.dart';
 
 /// Widget for displaying a category section with its results
@@ -10,7 +10,7 @@ class SearchCategorySection extends StatelessWidget {
   final int selectedIndex;
   final int startIndex;
   final Map<int, GlobalKey> resultKeys;
-  final Function(SearchResult) onResultTap;
+  final ValueChanged<SearchResult> onResultTap;
 
   const SearchCategorySection({
     super.key,

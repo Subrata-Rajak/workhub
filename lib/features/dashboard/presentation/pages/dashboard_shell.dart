@@ -30,6 +30,10 @@ class _DashboardShellState extends State<DashboardShell> {
     if (location.startsWith(RoutePaths.projects)) return 'projects';
     if (location.startsWith(RoutePaths.members)) return 'members';
     if (location.startsWith(RoutePaths.roles)) return 'roles';
+    if (location.startsWith(RoutePaths.tasks)) return 'tasks';
+    if (location.startsWith(RoutePaths.settings)) return 'settings';
+    if (location.startsWith(RoutePaths.settings)) return 'settings';
+    if (location.startsWith(RoutePaths.auditLogs)) return 'audit_logs';
     // Add logic for members/settings if routes exist
     if (location == RoutePaths.dashboard) return 'admin';
     return 'admin';
@@ -79,8 +83,11 @@ class _DashboardShellState extends State<DashboardShell> {
                     onDashboardTap: () => context.go(RoutePaths.dashboard),
                     onMembersTap: () => context.go(RoutePaths.members),
                     onProjectsTap: () => context.go(RoutePaths.projects),
+                    onTasksTap: () => context.go(RoutePaths.tasks),
                     onRolesTap: () => context.go(RoutePaths.roles),
-                    onSettingsTap: () {}, // TODO: Add Settings Route
+                    onSettingsTap: () => context.go(RoutePaths.settings),
+
+                    onAuditLogsTap: () => context.go(RoutePaths.auditLogs),
                     onClose: _toggleSidebar,
                   ),
 

@@ -9,4 +9,8 @@ class RoutePaths {
   static const String projectDetails = '/projects/:projectId';
   static const String members = '/members';
   static const String roles = '/roles';
+  static const String tasks = '/tasks';
+  static const String taskDetails = '/tasks/:taskId';
+  static const String settings = '/settings';
+  static const String auditLogs = '/audit-logs';
 }
